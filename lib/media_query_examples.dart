@@ -5,7 +5,7 @@ import 'responsive_widget.dart';
 /// Comprehensive examples of MediaQuery usage and responsive design patterns
 /// This demonstrates various techniques for creating responsive layouts
 class MediaQueryExamples extends StatelessWidget {
-  const MediaQueryExamples({Key? key}) : super(key: key);
+  const MediaQueryExamples({super.key});
 
   @override
   Widget build(BuildContext context) {

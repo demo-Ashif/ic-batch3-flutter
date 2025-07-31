@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_typography.dart';
+import 'responsive_grid.dart';
+import 'responsive_grid_example.dart';
 import 'figma_to_flutter_example.dart';
 import 'responsive_vs_adaptive_example.dart';
 import 'media_query_examples.dart';
@@ -22,14 +25,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Today\'s Topics:',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
+              Text('Today\'s Topics:', style: AppTypography.heading1),
               const SizedBox(height: 16),
 
               // Topic 1: Figma to Flutter UI
@@ -100,10 +96,27 @@ class HomeScreen extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              // Topic 5: Use Cases
+              // Topic 5: ResponsiveGrid Examples
               _buildTopicCard(
                 context,
-                '5. Responsive Widget Use Cases',
+                '5. ResponsiveGrid Examples',
+                'Learn how to use the ResponsiveGrid widget effectively',
+                Icons.grid_on,
+                Colors.indigo,
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ResponsiveGridExample(),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Topic 6: Use Cases
+              _buildTopicCard(
+                context,
+                '6. Responsive Widget Use Cases',
                 'Real-world examples of responsive design patterns',
                 Icons.cases,
                 Colors.teal,
@@ -117,10 +130,10 @@ class HomeScreen extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              // Topic 6: Best Practices
+              // Topic 7: Best Practices
               _buildTopicCard(
                 context,
-                '6. Best Practices Example',
+                '7. Best Practices Example',
                 'Comprehensive guide to responsive design best practices',
                 Icons.book,
                 Colors.deepPurple,

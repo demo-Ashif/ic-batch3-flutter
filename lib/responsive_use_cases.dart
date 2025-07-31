@@ -18,6 +18,7 @@ class ResponsiveUseCases extends StatelessWidget {
         padding: ResponsiveHelper.getResponsivePadding(context),
         child: Column(
           children: [
+            
             _buildEcommerceUseCase(context),
             const SizedBox(height: 24),
             _buildDashboardUseCase(context),
