@@ -38,6 +38,9 @@ dependencies:
   # State management
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
+  
+  # HTTP client
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
