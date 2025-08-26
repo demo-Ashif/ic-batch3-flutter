@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'screens/country_list_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:ic_batch3_flutter_classes/home_page.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //Initial Google Admob
+  await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
@@ -17,7 +22,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
       ),
-      home: const CountryListScreen(),
+      home: const HomePage(),
     );
   }
 }
