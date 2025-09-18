@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:ic_batch3_flutter_classes/home_page.dart';
+import 'package:ic_batch3_flutter_classes/firebase_options.dart';
+import 'package:ic_batch3_flutter_classes/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  //Initial Google Admob
-  await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
