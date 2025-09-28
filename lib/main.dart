@@ -38,6 +38,12 @@ class _TaskPageState extends State<TaskPage> {
     _reload();
   }
 
+  @override
+  void dispose() {
+    LocalDb.instance.close();
+    super.dispose();
+  }
+
   void _reload() {
     _future = LocalDb.instance.getAllTasks();
     setState(() {});
