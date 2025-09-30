@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/brand.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/brand_bloc.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/brand_cubit.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_cubit.dart';
 
 class BrandsWidget extends StatelessWidget {
   const BrandsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BrandBloc, BrandState>(
+    return BlocBuilder<BrandCubit, BrandState>(
       builder: (context, brandState) {
         if (brandState.status == BrandStatus.loading) {
           return const _BrandsLoadingWidget();
@@ -83,7 +83,7 @@ class _BrandsContent extends StatelessWidget {
 class _AllBrandChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final selectedBrandId = context.watch<ProductBloc>().state.selectedBrandId;
+    final selectedBrandId = context.watch<ProductCubit>().state.selectedBrandId;
     final isSelected = selectedBrandId == null;
 
     return Padding(
@@ -92,7 +92,7 @@ class _AllBrandChip extends StatelessWidget {
         selected: isSelected,
         onSelected: (selected) {
           if (selected) {
-            context.read<ProductBloc>().add(const ProductShowAllRequested());
+            context.read<ProductCubit>().loadAllProducts();
           }
         },
         label: const Text('All'),
@@ -110,7 +110,7 @@ class _BrandChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedBrandId = context.watch<ProductBloc>().state.selectedBrandId;
+    final selectedBrandId = context.watch<ProductCubit>().state.selectedBrandId;
     final isSelected = selectedBrandId == brand.id;
 
     return Padding(
@@ -119,7 +119,7 @@ class _BrandChip extends StatelessWidget {
         selected: isSelected,
         onSelected: (selected) {
           if (selected) {
-            context.read<ProductBloc>().add(ProductByBrandRequested(brand.id));
+            context.read<ProductCubit>().loadProductsByBrand(brand.id);
           }
         },
         label: Text(brand.name, style: const TextStyle(fontSize: 12)),

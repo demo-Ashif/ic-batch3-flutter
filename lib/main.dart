@@ -45,9 +45,11 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Ecommerce App',
       theme: ThemeData(
         useMaterial3: true,
+
         colorSchemeSeed: const Color(0xFF6750A4),
         appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
         cardTheme: CardTheme(

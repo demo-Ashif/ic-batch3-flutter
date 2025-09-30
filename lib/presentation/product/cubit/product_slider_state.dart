@@ -1,4 +1,4 @@
-part of 'product_slider_bloc.dart';
+part of 'product_slider_cubit.dart';
 
 enum ProductSliderStatus { initial, loading, success, failure }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_cubit.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
@@ -9,11 +9,11 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Products')),
-      body: BlocBuilder<ProductBloc, ProductState>(
+      body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           switch (state.status) {
             case ProductStatus.initial:
-              context.read<ProductBloc>().add(const ProductByBrandRequested(1));
+              context.read<ProductCubit>().loadProductsByBrand(1);
               return const Center(child: Text('Loading...'));
             case ProductStatus.loading:
               return const Center(child: CircularProgressIndicator());

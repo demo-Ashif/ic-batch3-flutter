@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/brand_bloc.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_bloc.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_slider_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/brand_cubit.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_cubit.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_slider_cubit.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/widgets/product_slider_widget.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/widgets/brands_widget.dart';
-import 'package:ic_batch3_flutter_classes/presentation/home/widgets/products_widget.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/widgets/products_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -26,22 +26,19 @@ class HomePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create:
-              (_) =>
-                  BrandBloc(repository: brandRepository)
-                    ..add(const BrandRequested()),
+          create: (_) => BrandCubit(repository: brandRepository)..loadBrands(),
         ),
         BlocProvider(
           create:
               (_) =>
-                  ProductSliderBloc(repository: productSliderRepository)
-                    ..add(const ProductSlidersRequested()),
+                  ProductSliderCubit(repository: productSliderRepository)
+                    ..loadSliders(),
         ),
         BlocProvider(
           create:
               (_) =>
-                  ProductBloc(repository: productRepository)
-                    ..add(const ProductByBrandRequested(1)),
+                  ProductCubit(repository: productRepository)
+                    ..loadProductsByBrand(1),
         ),
       ],
       child: Scaffold(
@@ -64,11 +61,9 @@ class HomePage extends StatelessWidget {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            context.read<ProductBloc>().add(const ProductByBrandRequested(1));
-            context.read<BrandBloc>().add(const BrandRequested());
-            context.read<ProductSliderBloc>().add(
-              const ProductSlidersRequested(),
-            );
+            context.read<ProductCubit>().loadProductsByBrand(1);
+            context.read<BrandCubit>().loadBrands();
+            context.read<ProductSliderCubit>().loadSliders();
           },
           child: const SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

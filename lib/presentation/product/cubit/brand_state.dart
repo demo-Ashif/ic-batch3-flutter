@@ -1,4 +1,4 @@
-part of 'brand_bloc.dart';
+part of 'brand_cubit.dart';
 
 enum BrandStatus { initial, loading, success, failure }
 

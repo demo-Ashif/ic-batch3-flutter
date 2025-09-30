@@ -1,24 +1,19 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/product_slider.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
 
-part 'product_slider_event.dart';
 part 'product_slider_state.dart';
 
-class ProductSliderBloc extends Bloc<ProductSliderEvent, ProductSliderState> {
-  ProductSliderBloc({required this.repository})
-    : super(const ProductSliderState.initial()) {
-    on<ProductSlidersRequested>(_onRequested);
-  }
+class ProductSliderCubit extends Cubit<ProductSliderState> {
+  ProductSliderCubit({required this.repository})
+    : super(const ProductSliderState.initial());
 
   final ProductSliderRepository repository;
 
-  Future<void> _onRequested(
-    ProductSlidersRequested event,
-    Emitter<ProductSliderState> emit,
-  ) async {
+  Future<void> loadSliders() async {
     emit(state.copyWith(status: ProductSliderStatus.loading));
+
     try {
       final sliders = await repository.getProductSliders();
       emit(

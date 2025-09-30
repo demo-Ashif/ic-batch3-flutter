@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/product_slider.dart';
-import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_slider_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_slider_cubit.dart';
 
 class ProductSliderWidget extends StatelessWidget {
   const ProductSliderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductSliderBloc, ProductSliderState>(
+    return BlocBuilder<ProductSliderCubit, ProductSliderState>(
       builder: (context, sliderState) {
         if (sliderState.status == ProductSliderStatus.loading) {
           return const _SliderLoadingWidget();
