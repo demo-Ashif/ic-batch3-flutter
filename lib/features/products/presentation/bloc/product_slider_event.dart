@@ -1,6 +1,6 @@
 part of 'product_slider_bloc.dart';
 
-sealed class ProductSliderEvent extends Equatable {
+abstract class ProductSliderEvent extends Equatable {
   const ProductSliderEvent();
 
   @override

@@ -79,8 +79,9 @@ class _HomePageState extends State<HomePage> {
                     if (sliderState.status == ProductSliderStatus.failure) {
                       return const SizedBox.shrink();
                     }
-                    if (sliderState.sliders.isEmpty)
+                    if (sliderState.sliders.isEmpty) {
                       return const SizedBox.shrink();
+                    }
                     return Column(
                       children: [
                         SizedBox(
