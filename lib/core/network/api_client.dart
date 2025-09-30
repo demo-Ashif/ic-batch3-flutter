@@ -1,0 +1,49 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+/// A tiny, reusable HTTP client wrapper.
+/// Keeps networking code in one place and returns decoded JSON.
+class ApiClient {
+  ApiClient({required this.baseUrl, http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
+
+  final String baseUrl;
+  final http.Client _httpClient;
+
+  Future<dynamic> get(String path, {Map<String, String>? headers}) async {
+    final uri = Uri.parse('$baseUrl$path');
+    final response = await _httpClient.get(uri, headers: headers);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) return null;
+      return jsonDecode(response.body);
+    }
+
+    throw HttpException(
+      message: 'Request failed',
+      statusCode: response.statusCode,
+      uri: uri,
+      body: response.body,
+    );
+  }
+}
+
+class HttpException implements Exception {
+  HttpException({
+    required this.message,
+    required this.statusCode,
+    required this.uri,
+    this.body,
+  });
+
+  final String message;
+  final int statusCode;
+  final Uri uri;
+  final String? body;
+
+  @override
+  String toString() {
+    return 'HttpException(statusCode: $statusCode, uri: $uri, message: $message)';
+  }
+}
