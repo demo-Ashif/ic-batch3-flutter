@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/product_slider.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/product_slider_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/product_slider.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
 
 part 'product_slider_event.dart';
 part 'product_slider_state.dart';

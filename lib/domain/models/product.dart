@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/brand.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/category.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/brand.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/category.dart';
 
 class Product extends Equatable {
   const Product({

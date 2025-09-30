@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/brand.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/brand_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/brand.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dart';
 
 part 'brand_event.dart';
 part 'brand_state.dart';

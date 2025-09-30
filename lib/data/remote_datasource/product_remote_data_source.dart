@@ -1,5 +1,5 @@
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/product.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/product.dart';
 
 /// Remote data source that fetches products from the ecommerce API.
 class ProductRemoteDataSource {

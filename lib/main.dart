@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
-import 'package:ic_batch3_flutter_classes/features/home/presentation/pages/main_navigation_page.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/brand_remote_data_source.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/brand_repository_impl.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/product_remote_data_source.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/product_repository_impl.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/product_slider_remote_data_source.dart';
-import 'package:ic_batch3_flutter_classes/features/products/data/product_slider_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/presentation/home/pages/main_navigation_page.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/brand_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/brand_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/product_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_slider_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/product_slider_repository_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

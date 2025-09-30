@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ic_batch3_flutter_classes/features/home/presentation/pages/home_page.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/brand_repository.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/product_repository.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/product_slider_repository.dart';
+import 'package:ic_batch3_flutter_classes/presentation/home/pages/home_page.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({

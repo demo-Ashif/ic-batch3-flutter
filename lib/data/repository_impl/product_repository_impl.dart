@@ -1,6 +1,6 @@
-import 'package:ic_batch3_flutter_classes/features/products/data/product_remote_data_source.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/models/product.dart';
-import 'package:ic_batch3_flutter_classes/features/products/domain/repository/product_repository.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/domain/models/product.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({required this.remoteDataSource});

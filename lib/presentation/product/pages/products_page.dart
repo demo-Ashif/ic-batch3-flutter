@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ic_batch3_flutter_classes/features/products/presentation/bloc/product_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/bloc/product_bloc.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
