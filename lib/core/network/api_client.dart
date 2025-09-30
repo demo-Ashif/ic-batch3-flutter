@@ -11,9 +11,16 @@ class ApiClient {
   final String baseUrl;
   final http.Client _httpClient;
 
+  // Default headers for API requests
+  Map<String, String> get _defaultHeaders => {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
   Future<dynamic> get(String path, {Map<String, String>? headers}) async {
     final uri = Uri.parse('$baseUrl$path');
-    final response = await _httpClient.get(uri, headers: headers);
+    final mergedHeaders = {..._defaultHeaders, ...?headers};
+    final response = await _httpClient.get(uri, headers: mergedHeaders);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       if (response.body.isEmpty) return null;

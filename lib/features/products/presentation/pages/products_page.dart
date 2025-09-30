@@ -13,7 +13,7 @@ class ProductsPage extends StatelessWidget {
         builder: (context, state) {
           switch (state.status) {
             case ProductStatus.initial:
-              context.read<ProductBloc>().add(const ProductRequested());
+              context.read<ProductBloc>().add(const ProductByBrandRequested(1));
               return const Center(child: Text('Loading...'));
             case ProductStatus.loading:
               return const Center(child: CircularProgressIndicator());
@@ -88,4 +88,3 @@ class ProductsPage extends StatelessWidget {
     );
   }
 }
-

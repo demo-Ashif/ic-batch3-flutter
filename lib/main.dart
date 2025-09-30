@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
+import 'package:ic_batch3_flutter_classes/features/home/presentation/pages/main_navigation_page.dart';
+import 'package:ic_batch3_flutter_classes/features/products/data/brand_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/features/products/data/brand_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/features/products/data/product_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/features/products/data/product_repository_impl.dart';
-import 'package:ic_batch3_flutter_classes/features/products/presentation/bloc/product_bloc.dart';
-import 'package:ic_batch3_flutter_classes/features/products/presentation/pages/products_page.dart';
+import 'package:ic_batch3_flutter_classes/features/products/data/product_slider_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/features/products/data/product_slider_repository_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,16 +19,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiClient = ApiClient(baseUrl: 'https://fakestoreapi.com');
-    final remote = ProductRemoteDataSource(apiClient: apiClient);
-    final repo = ProductRepositoryImpl(remoteDataSource: remote);
+    // Initialize API client for the new ecommerce API
+    final apiClient = ApiClient(
+      baseUrl: 'https://ecommerce-api.codesilicon.com',
+    );
 
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => ProductBloc(repository: repo))],
-      child: MaterialApp(
-        title: 'Ecommerce (BLoC) Demo',
-        theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
-        home: const ProductsPage(),
+    // Initialize data sources
+    final brandRemoteDataSource = BrandRemoteDataSource(apiClient: apiClient);
+    final productSliderRemoteDataSource = ProductSliderRemoteDataSource(
+      apiClient: apiClient,
+    );
+    final productRemoteDataSource = ProductRemoteDataSource(
+      apiClient: apiClient,
+    );
+
+    // Initialize repositories
+    final brandRepository = BrandRepositoryImpl(
+      remoteDataSource: brandRemoteDataSource,
+    );
+    final productSliderRepository = ProductSliderRepositoryImpl(
+      remoteDataSource: productSliderRemoteDataSource,
+    );
+    final productRepository = ProductRepositoryImpl(
+      remoteDataSource: productRemoteDataSource,
+    );
+
+    return MaterialApp(
+      title: 'Ecommerce App',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+      ),
+      home: MainNavigationPage(
+        brandRepository: brandRepository,
+        productSliderRepository: productSliderRepository,
+        productRepository: productRepository,
       ),
     );
   }

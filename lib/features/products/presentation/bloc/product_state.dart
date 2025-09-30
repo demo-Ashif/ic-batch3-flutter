@@ -7,30 +7,34 @@ class ProductState extends Equatable {
     required this.status,
     required this.products,
     this.errorMessage,
+    this.selectedBrandId,
   });
 
   const ProductState.initial()
     : status = ProductStatus.initial,
       products = const [],
-      errorMessage = null;
+      errorMessage = null,
+      selectedBrandId = null;
 
   final ProductStatus status;
   final List<Product> products;
   final String? errorMessage;
+  final int? selectedBrandId;
 
   ProductState copyWith({
     ProductStatus? status,
     List<Product>? products,
     String? errorMessage,
+    int? selectedBrandId,
   }) {
     return ProductState(
       status: status ?? this.status,
       products: products ?? this.products,
       errorMessage: errorMessage ?? this.errorMessage,
+      selectedBrandId: selectedBrandId ?? this.selectedBrandId,
     );
   }
 
   @override
-  List<Object?> get props => [status, products, errorMessage];
+  List<Object?> get props => [status, products, errorMessage, selectedBrandId];
 }
-
