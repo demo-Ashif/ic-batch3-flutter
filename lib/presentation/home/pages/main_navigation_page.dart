@@ -5,6 +5,7 @@ import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dar
 import 'package:ic_batch3_flutter_classes/domain/repository/category_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
+import 'package:ic_batch3_flutter_classes/presentation/user/pages/profile_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({
@@ -38,11 +39,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         productSliderRepository: widget.productSliderRepository,
         productRepository: widget.productRepository,
       ),
-      CategoriesPage(
-        categoryRepository: widget.categoryRepository,
-      ),
+      CategoriesPage(categoryRepository: widget.categoryRepository),
       const _PlaceholderPage(title: 'Cart'),
-      const _PlaceholderPage(title: 'Profile'),
+      const ProfilePage(),
     ];
   }
 

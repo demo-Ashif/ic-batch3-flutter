@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/pages/main_navigation_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/auth_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/user_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/auth_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/user_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/auth_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/user_repository.dart';
+import 'package:ic_batch3_flutter_classes/core/storage/token_storage.dart';
+import 'package:ic_batch3_flutter_classes/presentation/user/cubit/user_cubit.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/brand_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/brand_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/category_remote_data_source.dart';
@@ -27,12 +36,10 @@ class MyApp extends StatelessWidget {
     );
 
     // Initialize data sources
-    final brandRemoteDataSource = BrandRemoteDataSource(
-        apiClient: apiClient
-    );
+    final brandRemoteDataSource = BrandRemoteDataSource(apiClient: apiClient);
 
     final categoryRemoteDataSource = CategoryRemoteDataSource(
-        apiClient: apiClient
+      apiClient: apiClient,
     );
 
     final productSliderRemoteDataSource = ProductSliderRemoteDataSource(
@@ -57,38 +64,57 @@ class MyApp extends StatelessWidget {
       remoteDataSource: productRemoteDataSource,
     );
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Ecommerce App',
-      theme: ThemeData(
-        useMaterial3: true,
+    // Auth & User
+    final authRemoteDataSource = AuthRemoteDataSource(apiClient: apiClient);
+    final userRemoteDataSource = UserRemoteDataSource(apiClient: apiClient);
+    final AuthRepository authRepository = AuthRepositoryImpl(
+      remoteDataSource: authRemoteDataSource,
+    );
+    final UserRepository userRepository = UserRepositoryImpl(
+      remoteDataSource: userRemoteDataSource,
+    );
+    final tokenStorage = TokenStorage();
 
-        colorSchemeSeed: const Color(0xFF6750A4),
-        appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
-        cardTheme: CardTheme(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
+    return BlocProvider(
+      create:
+          (_) => UserCubit(
+            authRepository: authRepository,
+            userRepository: userRepository,
+            tokenStorage: tokenStorage,
+          )..initialize(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Ecommerce App',
+        theme: ThemeData(
+          useMaterial3: true,
+
+          colorSchemeSeed: const Color(0xFF6750A4),
+          appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+          cardTheme: CardTheme(
+            elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          filledButtonTheme: FilledButtonThemeData(
+            style: FilledButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          chipTheme: ChipThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
         ),
-        chipTheme: ChipThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        home: MainNavigationPage(
+          brandRepository: brandRepository,
+          categoryRepository: categoryRepository,
+          productSliderRepository: productSliderRepository,
+          productRepository: productRepository,
         ),
-      ),
-      home: MainNavigationPage(
-        brandRepository: brandRepository,
-        categoryRepository: categoryRepository,
-        productSliderRepository: productSliderRepository,
-        productRepository: productRepository,
       ),
     );
   }
