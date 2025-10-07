@@ -6,6 +6,7 @@ import 'package:ic_batch3_flutter_classes/domain/repository/category_repository.
 import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
 import 'package:ic_batch3_flutter_classes/presentation/user/pages/profile_page.dart';
+import 'package:ic_batch3_flutter_classes/presentation/cart/pages/cart_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({
@@ -40,7 +41,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         productRepository: widget.productRepository,
       ),
       CategoriesPage(categoryRepository: widget.categoryRepository),
-      const _PlaceholderPage(title: 'Cart'),
+      const CartPage(),
       const ProfilePage(),
     ];
   }
@@ -83,57 +84,4 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   }
 }
 
-class _PlaceholderPage extends StatelessWidget {
-  const _PlaceholderPage({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              _getIconForTitle(title),
-              size: 64,
-              color: colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '$title Page',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  IconData _getIconForTitle(String title) {
-    switch (title) {
-      case 'Categories':
-        return Icons.category;
-      case 'Cart':
-        return Icons.shopping_cart;
-      case 'Profile':
-        return Icons.person;
-      default:
-        return Icons.help_outline;
-    }
-  }
-}
+// Removed unused placeholder page

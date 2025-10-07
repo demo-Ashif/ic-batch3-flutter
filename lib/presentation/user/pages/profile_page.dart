@@ -17,20 +17,71 @@ class ProfilePage extends StatelessWidget {
         }
         if (state.status == UserStatus.authenticated && state.profile != null) {
           final p = state.profile!;
+          final theme = Theme.of(context);
+          final colorScheme = theme.colorScheme;
           return Scaffold(
             appBar: AppBar(title: const Text('Profile')),
             body: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                _tile('Name', p.customerName),
-                _tile('Email', p.email),
-                _tile('Phone', p.customerPhone),
-                const Divider(),
-                _tile('Address', p.customerAddress),
-                _tile('City', p.customerCity),
-                _tile('State', p.customerState),
-                _tile('Postcode', p.customerPostcode),
-                _tile('Country', p.customerCountry),
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 36,
+                          backgroundColor: colorScheme.primaryContainer,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(36),
+                            child: Image.asset(
+                              'assets/images/crafty-bay-logo.png',
+                              fit: BoxFit.contain,
+                              height: 48,
+                              errorBuilder:
+                                  (_, __, ___) => Icon(
+                                    Icons.person,
+                                    color: colorScheme.onPrimaryContainer,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          p.customerName.isEmpty ? 'User' : p.customerName,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(p.email, style: theme.textTheme.bodyMedium),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _SectionCard(
+                  title: 'Contact',
+                  children: [
+                    _kv('Phone', p.customerPhone),
+                    _kv('Fax', p.customerFax),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                _SectionCard(
+                  title: 'Billing Address',
+                  children: [
+                    _kv('Address', p.customerAddress),
+                    _kv('City', p.customerCity),
+                    _kv('State', p.customerState),
+                    _kv('Postcode', p.customerPostcode),
+                    _kv('Country', p.customerCountry),
+                  ],
+                ),
                 const SizedBox(height: 24),
                 FilledButton(
                   onPressed: () => context.read<UserCubit>().logout(),
@@ -46,11 +97,44 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _tile(String title, String value) {
+  Widget _kv(String k, String v) {
     return ListTile(
+      dense: true,
       contentPadding: EdgeInsets.zero,
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text(value.isEmpty ? '-' : value),
+      title: Text(k, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(v.isEmpty ? '-' : v),
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({required this.title, required this.children});
+
+  final String title;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...children,
+          ],
+        ),
+      ),
     );
   }
 }

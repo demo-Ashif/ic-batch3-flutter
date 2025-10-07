@@ -34,6 +34,32 @@ class ApiClient {
       body: response.body,
     );
   }
+
+  Future<dynamic> post(
+    String path, {
+    Map<String, String>? headers,
+    Map<String, dynamic>? body,
+  }) async {
+    final uri = Uri.parse('$baseUrl$path');
+    final mergedHeaders = {..._defaultHeaders, ...?headers};
+    final response = await _httpClient.post(
+      uri,
+      headers: mergedHeaders,
+      body: body != null ? jsonEncode(body) : null,
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) return null;
+      return jsonDecode(response.body);
+    }
+
+    throw HttpException(
+      message: 'Request failed',
+      statusCode: response.statusCode,
+      uri: uri,
+      body: response.body,
+    );
+  }
 }
 
 class HttpException implements Exception {

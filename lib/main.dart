@@ -4,12 +4,16 @@ import 'package:ic_batch3_flutter_classes/presentation/home/pages/main_navigatio
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/auth_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/user_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/cart_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/auth_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/user_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/cart_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/auth_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/user_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/cart_repository.dart';
 import 'package:ic_batch3_flutter_classes/core/storage/token_storage.dart';
 import 'package:ic_batch3_flutter_classes/presentation/user/cubit/user_cubit.dart';
+import 'package:ic_batch3_flutter_classes/presentation/cart/cubit/cart_cubit.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/brand_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/brand_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/category_remote_data_source.dart';
@@ -67,21 +71,36 @@ class MyApp extends StatelessWidget {
     // Auth & User
     final authRemoteDataSource = AuthRemoteDataSource(apiClient: apiClient);
     final userRemoteDataSource = UserRemoteDataSource(apiClient: apiClient);
+    final cartRemoteDataSource = CartRemoteDataSource(apiClient: apiClient);
     final AuthRepository authRepository = AuthRepositoryImpl(
       remoteDataSource: authRemoteDataSource,
     );
     final UserRepository userRepository = UserRepositoryImpl(
       remoteDataSource: userRemoteDataSource,
     );
+    final CartRepository cartRepository = CartRepositoryImpl(
+      remoteDataSource: cartRemoteDataSource,
+    );
     final tokenStorage = TokenStorage();
 
-    return BlocProvider(
-      create:
-          (_) => UserCubit(
-            authRepository: authRepository,
-            userRepository: userRepository,
-            tokenStorage: tokenStorage,
-          )..initialize(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (_) => UserCubit(
+                authRepository: authRepository,
+                userRepository: userRepository,
+                tokenStorage: tokenStorage,
+              )..initialize(),
+        ),
+        BlocProvider(
+          create:
+              (_) => CartCubit(
+                cartRepository: cartRepository,
+                tokenStorage: tokenStorage,
+              )..loadCart(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce App',

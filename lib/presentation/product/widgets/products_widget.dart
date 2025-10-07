@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ic_batch3_flutter_classes/presentation/cart/cubit/cart_cubit.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/product.dart';
 import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_cubit.dart';
 
@@ -301,7 +302,7 @@ class _ProductsGridView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.6,
+        childAspectRatio: 0.5,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -494,23 +495,7 @@ class _ProductGridCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 14,
-                              color: colorScheme.primary,
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              '4.5',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
+                        _AddToCartButton(productId: product.id),
                       ],
                     ),
                   ],
@@ -675,23 +660,7 @@ class _ProductListCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 16,
-                              color: colorScheme.primary,
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              '4.5',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
+                        _AddToCartButton(productId: product.id),
                       ],
                     ),
                   ],
@@ -700,28 +669,46 @@ class _ProductListCard extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              // Action Button
-              Container(
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    // TODO: Navigate to product details
-                  },
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: colorScheme.onPrimaryContainer,
-                  ),
-                  padding: const EdgeInsets.all(12),
-                ),
-              ),
+              const SizedBox(width: 8),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AddToCartButton extends StatelessWidget {
+  const _AddToCartButton({required this.productId});
+
+  final int productId;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return FilledButton.icon(
+      onPressed: () {
+        // Using default color/size and qty=1 as this app has no variants selector yet
+        context.read<CartCubit>().addToCart(
+          productId: productId,
+          color: 'Red',
+          size: 'X',
+          qty: 1,
+        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Added to cart')));
+      },
+      style: FilledButton.styleFrom(
+        minimumSize: const Size(0, 32),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+      ),
+      icon: Icon(
+        Icons.add_shopping_cart,
+        size: 16,
+        color: colorScheme.onPrimary,
+      ),
+      label: const Text('Add'),
     );
   }
 }
