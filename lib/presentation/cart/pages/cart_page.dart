@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/presentation/cart/cubit/cart_cubit.dart';
 import 'package:ic_batch3_flutter_classes/presentation/cart/cubit/cart_state.dart';
+import 'package:ic_batch3_flutter_classes/presentation/checkout/pages/checkout_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -113,7 +114,7 @@ class _CartSummary extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: colorScheme.surfaceVariant,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -142,7 +143,13 @@ class _CartSummary extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CheckoutPage(),
+                    ),
+                  );
+                },
                 child: const Text('Checkout'),
               ),
             ),

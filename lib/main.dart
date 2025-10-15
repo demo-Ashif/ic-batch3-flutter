@@ -24,6 +24,10 @@ import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_remote_
 import 'package:ic_batch3_flutter_classes/data/repository_impl/product_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_slider_remote_data_source.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/product_slider_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/invoice_remote_data_source.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/invoice_repository_impl.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/invoice_repository.dart';
+import 'package:ic_batch3_flutter_classes/presentation/checkout/cubit/checkout_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,6 +86,9 @@ class MyApp extends StatelessWidget {
     final authRemoteDataSource = AuthRemoteDataSource(apiClient: apiClient);
     final userRemoteDataSource = UserRemoteDataSource(apiClient: apiClient);
     final cartRemoteDataSource = CartRemoteDataSource(apiClient: apiClient);
+    final invoiceRemoteDataSource = InvoiceRemoteDataSource(
+      apiClient: apiClient,
+    );
     final AuthRepository authRepository = AuthRepositoryImpl(
       remoteDataSource: authRemoteDataSource,
     );
@@ -90,6 +97,9 @@ class MyApp extends StatelessWidget {
     );
     final CartRepository cartRepository = CartRepositoryImpl(
       remoteDataSource: cartRemoteDataSource,
+    );
+    final InvoiceRepository invoiceRepository = InvoiceRepositoryImpl(
+      remoteDataSource: invoiceRemoteDataSource,
     );
     final tokenStorage = TokenStorage();
 
@@ -109,6 +119,13 @@ class MyApp extends StatelessWidget {
                 cartRepository: cartRepository,
                 tokenStorage: tokenStorage,
               )..loadCart(),
+        ),
+        BlocProvider(
+          create:
+              (_) => CheckoutCubit(
+                invoiceRepository: invoiceRepository,
+                tokenStorage: tokenStorage,
+              ),
         ),
       ],
       child: MaterialApp(
