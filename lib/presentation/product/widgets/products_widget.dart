@@ -3,9 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/presentation/cart/cubit/cart_cubit.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/product.dart';
 import 'package:ic_batch3_flutter_classes/presentation/product/cubit/product_cubit.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_details_repository.dart';
+import 'package:ic_batch3_flutter_classes/presentation/product/pages/product_details_page.dart';
 
 class ProductsWidget extends StatefulWidget {
-  const ProductsWidget({super.key});
+  const ProductsWidget({
+    super.key,
+    required this.productDetailsRepository,
+  });
+
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   State<ProductsWidget> createState() => _ProductsWidgetState();
@@ -28,7 +35,10 @@ class _ProductsWidgetState extends State<ProductsWidget> {
           },
         ),
         const SizedBox(height: 12),
-        _ProductsContent(isGridView: _isGridView),
+        _ProductsContent(
+          isGridView: _isGridView,
+          productDetailsRepository: widget.productDetailsRepository,
+        ),
       ],
     );
   }
@@ -97,7 +107,7 @@ class _ViewToggleButtons extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.surfaceVariant,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -147,7 +157,7 @@ class _ToggleButton extends StatelessWidget {
           icon,
           size: 20,
           color:
-              isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+          isSelected ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
         ),
       ),
     );
@@ -155,9 +165,13 @@ class _ToggleButton extends StatelessWidget {
 }
 
 class _ProductsContent extends StatelessWidget {
-  const _ProductsContent({required this.isGridView});
+  const _ProductsContent({
+    required this.isGridView,
+    required this.productDetailsRepository,
+  });
 
   final bool isGridView;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +195,7 @@ class _ProductsContent extends StatelessWidget {
         return _ProductsList(
           products: productState.products,
           isGridView: isGridView,
+          productDetailsRepository: productDetailsRepository,
         );
       },
     );
@@ -274,25 +289,40 @@ class _ProductsEmptyWidget extends StatelessWidget {
 }
 
 class _ProductsList extends StatelessWidget {
-  const _ProductsList({required this.products, required this.isGridView});
+  const _ProductsList({
+    required this.products,
+    required this.isGridView,
+    required this.productDetailsRepository,
+  });
 
   final List<Product> products;
   final bool isGridView;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
     if (isGridView) {
-      return _ProductsGridView(products: products);
+      return _ProductsGridView(
+        products: products,
+        productDetailsRepository: productDetailsRepository,
+      );
     } else {
-      return _ProductsListView(products: products);
+      return _ProductsListView(
+        products: products,
+        productDetailsRepository: productDetailsRepository,
+      );
     }
   }
 }
 
 class _ProductsGridView extends StatelessWidget {
-  const _ProductsGridView({required this.products});
+  const _ProductsGridView({
+    required this.products,
+    required this.productDetailsRepository,
+  });
 
   final List<Product> products;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -309,16 +339,23 @@ class _ProductsGridView extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return _ProductGridCard(product: product);
+        return _ProductGridCard(
+          product: product,
+          productDetailsRepository: productDetailsRepository,
+        );
       },
     );
   }
 }
 
 class _ProductsListView extends StatelessWidget {
-  const _ProductsListView({required this.products});
+  const _ProductsListView({
+    required this.products,
+    required this.productDetailsRepository,
+  });
 
   final List<Product> products;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -331,7 +368,10 @@ class _ProductsListView extends StatelessWidget {
         final product = products[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: _ProductListCard(product: product),
+          child: _ProductListCard(
+            product: product,
+            productDetailsRepository: productDetailsRepository,
+          ),
         );
       },
     );
@@ -339,9 +379,13 @@ class _ProductsListView extends StatelessWidget {
 }
 
 class _ProductGridCard extends StatelessWidget {
-  const _ProductGridCard({required this.product});
+  const _ProductGridCard({
+    required this.product,
+    required this.productDetailsRepository,
+  });
 
   final Product product;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +398,15 @@ class _ProductGridCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // TODO: Navigate to product details
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsPage(
+                productId: product.id,
+                productDetailsRepository: productDetailsRepository,
+              ),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,37 +422,37 @@ class _ProductGridCard extends StatelessWidget {
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(16),
                       ),
-                      color: colorScheme.surfaceVariant,
+                      color: colorScheme.surfaceContainerHighest,
                     ),
                     child:
-                        product.imageUrl.isNotEmpty
-                            ? ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                              child: Image.network(
-                                product.imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: colorScheme.surfaceVariant,
-                                    child: Icon(
-                                      Icons.image_not_supported,
-                                      size: 40,
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                            : Container(
-                              color: colorScheme.surfaceVariant,
-                              child: Icon(
-                                Icons.image,
-                                size: 40,
-                                color: colorScheme.onSurfaceVariant,
-                              ),
+                    product.imageUrl.isNotEmpty
+                        ? ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(16),
+                      ),
+                      child: Image.network(
+                        product.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: colorScheme.surfaceContainerHighest,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              size: 40,
+                              color: colorScheme.onSurfaceVariant,
                             ),
+                          );
+                        },
+                      ),
+                    )
+                        : Container(
+                      color: colorScheme.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.image,
+                        size: 40,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
 
                   // Wishlist Button
@@ -510,9 +562,13 @@ class _ProductGridCard extends StatelessWidget {
 }
 
 class _ProductListCard extends StatelessWidget {
-  const _ProductListCard({required this.product});
+  const _ProductListCard({
+    required this.product,
+    required this.productDetailsRepository,
+  });
 
   final Product product;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -525,7 +581,15 @@ class _ProductListCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // TODO: Navigate to product details
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsPage(
+                productId: product.id,
+                productDetailsRepository: productDetailsRepository,
+              ),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -539,35 +603,35 @@ class _ProductListCard extends StatelessWidget {
                     height: 90,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: colorScheme.surfaceVariant,
+                      color: colorScheme.surfaceContainerHighest,
                     ),
                     child:
-                        product.imageUrl.isNotEmpty
-                            ? ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.network(
-                                product.imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: colorScheme.surfaceVariant,
-                                    child: Icon(
-                                      Icons.image_not_supported,
-                                      size: 30,
-                                      color: colorScheme.onSurfaceVariant,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                            : Container(
-                              color: colorScheme.surfaceVariant,
-                              child: Icon(
-                                Icons.image,
-                                size: 30,
-                                color: colorScheme.onSurfaceVariant,
-                              ),
+                    product.imageUrl.isNotEmpty
+                        ? ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        product.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: colorScheme.surfaceContainerHighest,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              size: 30,
+                              color: colorScheme.onSurfaceVariant,
                             ),
+                          );
+                        },
+                      ),
+                    )
+                        : Container(
+                      color: colorScheme.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.image,
+                        size: 30,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
 
                   // Wishlist Button

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
+import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_details_remote_datasource.dart';
+import 'package:ic_batch3_flutter_classes/data/repository_impl/product_details_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/pages/main_navigation_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/auth_remote_data_source.dart';
@@ -54,6 +56,10 @@ class MyApp extends StatelessWidget {
       apiClient: apiClient,
     );
 
+    final productDetailsRemoteDataSource = ProductDetailsRemoteDataSource(
+      apiClient: apiClient,
+    );
+
     // Initialize repositories
     final brandRepository = BrandRepositoryImpl(
       remoteDataSource: brandRemoteDataSource,
@@ -66,6 +72,10 @@ class MyApp extends StatelessWidget {
     );
     final productRepository = ProductRepositoryImpl(
       remoteDataSource: productRemoteDataSource,
+    );
+
+    final productDetailsRepository = ProductDetailsRepositoryImpl(
+      remoteDataSource: productDetailsRemoteDataSource,
     );
 
     // Auth & User
@@ -133,6 +143,7 @@ class MyApp extends StatelessWidget {
           categoryRepository: categoryRepository,
           productSliderRepository: productSliderRepository,
           productRepository: productRepository,
+          productDetailsRepository: productDetailsRepository,
         ),
       ),
     );

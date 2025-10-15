@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_details_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_repository.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/product_slider_repository.dart';
 import 'package:ic_batch3_flutter_classes/presentation/product/cubit/brand_cubit.dart';
@@ -16,11 +17,14 @@ class HomePage extends StatelessWidget {
     required this.brandRepository,
     required this.productSliderRepository,
     required this.productRepository,
+    required this.productDetailsRepository,
   });
 
   final BrandRepository brandRepository;
   final ProductSliderRepository productSliderRepository;
   final ProductRepository productRepository;
+  final ProductDetailsRepository productDetailsRepository;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -65,13 +69,15 @@ class HomePage extends StatelessWidget {
             context.read<BrandCubit>().loadBrands();
             context.read<ProductSliderCubit>().loadSliders();
           },
-          child: const SingleChildScrollView(
+          child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 ProductSliderWidget(),
                 BrandsWidget(),
-                ProductsWidget(),
+                ProductsWidget(
+                  productDetailsRepository: productDetailsRepository,
+                ),
                 SizedBox(height: 16),
               ],
             ),

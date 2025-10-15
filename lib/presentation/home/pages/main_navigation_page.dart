@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ic_batch3_flutter_classes/domain/repository/product_details_repository.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/pages/home_page.dart';
 import 'package:ic_batch3_flutter_classes/presentation/product/pages/categories_page.dart';
 import 'package:ic_batch3_flutter_classes/domain/repository/brand_repository.dart';
@@ -15,12 +16,14 @@ class MainNavigationPage extends StatefulWidget {
     required this.categoryRepository,
     required this.productSliderRepository,
     required this.productRepository,
+    required this.productDetailsRepository,
   });
 
   final BrandRepository brandRepository;
   final CategoryRepository categoryRepository;
   final ProductSliderRepository productSliderRepository;
   final ProductRepository productRepository;
+  final ProductDetailsRepository productDetailsRepository;
 
   @override
   State<MainNavigationPage> createState() => _MainNavigationPageState();
@@ -39,6 +42,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         brandRepository: widget.brandRepository,
         productSliderRepository: widget.productSliderRepository,
         productRepository: widget.productRepository,
+        productDetailsRepository: widget.productDetailsRepository,
       ),
       CategoriesPage(categoryRepository: widget.categoryRepository),
       const CartPage(),
