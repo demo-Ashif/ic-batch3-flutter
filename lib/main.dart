@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
+import 'package:ic_batch3_flutter_classes/core/network/dio_client.dart';
 import 'package:ic_batch3_flutter_classes/data/remote_datasource/product_details_remote_datasource.dart';
 import 'package:ic_batch3_flutter_classes/data/repository_impl/product_details_repository_impl.dart';
 import 'package:ic_batch3_flutter_classes/presentation/home/pages/main_navigation_page.dart';
@@ -40,10 +41,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Initialize API client for the new ecommerce API
-
     final apiClient = ApiClient(
       baseUrl: 'https://ecommerce-api.codesilicon.com',
     );
+
+    // Initialize Dio client
+    final dioClient = DioClient.instance;
+    dioClient.configureBaseUrl('https://ecommerce-api.codesilicon.com');
+    dioClient.configureHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    dioClient.configureTimeout(const Duration(seconds: 30));
+
+    // DioApiClient is now available via dioClient.apiClient
+    // You can use it like: dioClient.apiClient.getMethod('/api/endpoint')
 
     // Initialize data sources
     final brandRemoteDataSource = BrandRemoteDataSource(apiClient: apiClient);
@@ -57,7 +69,7 @@ class MyApp extends StatelessWidget {
     );
 
     final productRemoteDataSource = ProductRemoteDataSource(
-      apiClient: apiClient,
+      apiClient: dioClient.apiClient,
     );
 
     final productDetailsRemoteDataSource = ProductDetailsRemoteDataSource(

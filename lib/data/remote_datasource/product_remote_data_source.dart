@@ -1,11 +1,12 @@
 import 'package:ic_batch3_flutter_classes/core/network/api_client.dart';
+import 'package:ic_batch3_flutter_classes/core/network/dio_api_client.dart';
 import 'package:ic_batch3_flutter_classes/domain/models/product.dart';
 
 /// Remote data source that fetches products from the ecommerce API.
 class ProductRemoteDataSource {
   ProductRemoteDataSource({required this.apiClient});
 
-  final ApiClient apiClient;
+  final DioApiClient apiClient;
 
   /// Fetch all products.
   Future<List<Product>> fetchProducts() async {
